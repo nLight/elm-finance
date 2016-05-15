@@ -1,6 +1,7 @@
 module Sheet exposing (Model, Msg, view, update, init, add)
 
 import Html exposing (..)
+import Html.Events exposing (onClick)
 import Html.Attributes exposing (class, colspan)
 import Entry
 
@@ -18,6 +19,7 @@ init =
 
 type Msg
     = Add Entry.Model
+    | Delete Int
 
 
 add : Entry.Model -> Model -> Model
@@ -31,6 +33,9 @@ update message model =
         Add entry ->
             add entry model
 
+        Delete i ->
+            (List.take i model) ++ (List.drop (i + 1) model)
+
 
 view : Model -> Html Msg
 view model =
@@ -41,6 +46,7 @@ view model =
                 , th [] [ text "Category" ]
                 , th [] [ text "Date" ]
                 , th [] [ text "Price" ]
+                , th [] []
                 ]
             ]
         , entriesView model
@@ -58,19 +64,21 @@ total model =
     tr []
         [ td [ colspan 3 ] [ text "Total" ]
         , td [] [ text (toString (sumPrice model)) ]
+        , td [] []
         ]
 
 
 entriesView : Model -> Html Msg
 entriesView model =
-    tbody [] (List.map entryView model)
+    tbody [] (List.indexedMap entryView model)
 
 
-entryView : Entry.Model -> Html Msg
-entryView model =
+entryView : Int -> Entry.Model -> Html Msg
+entryView i model =
     tr []
         [ td [] [ text model.name ]
         , td [] [ text model.category ]
         , td [] [ text model.date ]
         , td [] [ text (toString model.price) ]
+        , td [] [ button [ onClick (Delete i) ] [ text "Delete" ] ]
         ]
