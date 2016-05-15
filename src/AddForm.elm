@@ -3,9 +3,7 @@ module AddForm exposing (Model, Msg, view, update)
 import Html exposing (..)
 import Html.Events exposing (onSubmit, onInput)
 import Html.Attributes exposing (type', value)
-import Platform.Cmd as Cmd exposing (none)
 import Maybe
-import String
 import Entry
 
 
@@ -13,36 +11,19 @@ type alias Model =
     Entry.Model
 
 
-type Field
-    = Name
-    | Date'
-    | Price
-
-
 type Msg
-    = Update Field String
+    = Update Entry.Field String
     | Submit
 
 
-update : Msg -> Model -> ( Model, Cmd Msg, Maybe Model )
+update : Msg -> Model -> ( Model, Maybe Model )
 update message model =
     case message of
         Submit ->
-            ( Entry.init, none, Just model )
+            ( Entry.init, Just model )
 
-        Update Name value ->
-            ( { model | name = value }, none, Nothing )
-
-        Update Date' value ->
-            ( { model | date = value }, none, Nothing )
-
-        Update Price value ->
-            case String.toFloat value of
-                Ok float ->
-                    ( { model | price = float }, none, Nothing )
-
-                Err _ ->
-                    ( model, none, Nothing )
+        Update field val ->
+            ( Entry.update (Entry.Update field val) model, Nothing )
 
 
 view : Model -> Html Msg
@@ -52,7 +33,7 @@ view model =
             [ label [] [ text "Name" ]
             , input
                 [ type' "text"
-                , onInput (Update Name)
+                , onInput (Update Entry.Name)
                 , value model.name
                 ]
                 []
@@ -61,7 +42,7 @@ view model =
             [ label [] [ text "Date" ]
             , input
                 [ type' "text"
-                , onInput (Update Date')
+                , onInput (Update Entry.Date')
                 , value model.date
                 ]
                 []
@@ -70,7 +51,7 @@ view model =
             [ label [] [ text "Price" ]
             , input
                 [ type' "text"
-                , onInput (Update Price)
+                , onInput (Update Entry.Price)
                 , value (toString model.price)
                 ]
                 []
