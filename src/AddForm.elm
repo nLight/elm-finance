@@ -2,7 +2,7 @@ module AddForm exposing (Model, Msg, view, update)
 
 import Html exposing (..)
 import Html.Events exposing (onSubmit, onInput)
-import Html.Attributes exposing (type', value)
+import Html.Attributes exposing (class, type', value)
 import Maybe
 import Entry
 
@@ -29,33 +29,36 @@ update message model =
 view : Model -> Html Msg
 view model =
     form [ onSubmit Submit ]
-        [ div []
+        [ div [ class "form-group" ]
             [ label [] [ text "Name" ]
             , input
-                [ type' "text"
+                [ class "form-control"
+                , type' "text"
                 , onInput (Update Entry.Name)
                 , value model.name
                 ]
                 []
             ]
-        , div []
+        , div [ class "form-group" ]
             [ label [] [ text "Date" ]
             , input
-                [ type' "text"
+                [ class "form-control"
+                , type' "text"
                 , onInput (Update Entry.Date')
                 , value model.date
                 ]
                 []
             ]
-        , div []
+        , div [ class "form-group" ]
             [ label [] [ text "Price" ]
             , input
-                [ type' "text"
+                [ class "form-control"
+                , type' "text"
                 , onInput (Update Entry.Price)
                 , value (toString model.price)
                 ]
                 []
             ]
         , div []
-            [ button [ type' "submit" ] [ text "Add" ] ]
+            [ button [ class "btn btn-primary", type' "submit" ] [ text "Add" ] ]
         ]

@@ -1,0 +1,21 @@
+{
+  "name": "elm-finance",
+  "homepage": "https://github.com/nLight/elm-finance",
+  "authors": [
+    "Dmitriy Rozhkov <rojkov.dmitry@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "AdminLTE": "admin-lte#^2.3.3"
+  }
+}

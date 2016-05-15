@@ -39,7 +39,7 @@ update message model =
 
 view : Model -> Html Msg
 view model =
-    table []
+    table [ class "table" ]
         [ thead []
             [ tr []
                 [ th [] [ text "Name" ]
@@ -49,8 +49,7 @@ view model =
                 , th [] []
                 ]
             ]
-        , entriesView model
-        , total model
+        , tbody [] (entriesView model ++ [ total model ])
         ]
 
 
@@ -62,15 +61,15 @@ sumPrice model =
 total : Model -> Html Msg
 total model =
     tr []
-        [ td [ colspan 3 ] [ text "Total" ]
+        [ th [ colspan 3 ] [ text "Total" ]
         , td [] [ text (toString (sumPrice model)) ]
         , td [] []
         ]
 
 
-entriesView : Model -> Html Msg
+entriesView : Model -> List (Html Msg)
 entriesView model =
-    tbody [] (List.indexedMap entryView model)
+    List.indexedMap entryView model
 
 
 entryView : Int -> Entry.Model -> Html Msg
@@ -80,5 +79,5 @@ entryView i model =
         , td [] [ text model.category ]
         , td [] [ text model.date ]
         , td [] [ text (toString model.price) ]
-        , td [] [ button [ onClick (Delete i) ] [ text "Delete" ] ]
+        , td [] [ button [ class "btn btn-xs btn-default", onClick (Delete i) ] [ text "Delete" ] ]
         ]
