@@ -3,6 +3,7 @@ module AddForm exposing (Model, Msg, view, update)
 import Html exposing (..)
 import Html.Events exposing (onSubmit, onInput)
 import Html.Attributes exposing (type', value)
+import Platform.Cmd as Cmd exposing (none)
 import Maybe
 import String
 import Entry
@@ -23,25 +24,25 @@ type Msg
     | Submit
 
 
-update : Msg -> Model -> ( Model, Maybe Model )
+update : Msg -> Model -> ( Model, Cmd Msg, Maybe Model )
 update message model =
     case message of
         Submit ->
-            ( Entry.init, Just model )
+            ( Entry.init, none, Just model )
 
         Update Name value ->
-            ( { model | name = value }, Nothing )
+            ( { model | name = value }, none, Nothing )
 
         Update Date' value ->
-            ( { model | date = value }, Nothing )
+            ( { model | date = value }, none, Nothing )
 
         Update Price value ->
             case String.toFloat value of
                 Ok float ->
-                    ( { model | price = float }, Nothing )
+                    ( { model | price = float }, none, Nothing )
 
                 Err _ ->
-                    ( model, Nothing )
+                    ( model, none, Nothing )
 
 
 view : Model -> Html Msg
