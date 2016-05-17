@@ -1,6 +1,7 @@
 module Sheet exposing (Model, Msg, view, update, init, add)
 
 import Html exposing (..)
+import Html.App as App
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (class, colspan)
 import Entry
@@ -12,19 +13,14 @@ type alias Model =
 
 init : Model
 init =
-    [ { name = "Macbook", category = "Work", date = "2016-05-10", price = 1400 }
-    , { name = "Groceries", category = "Groceries", date = "2016-05-10", price = 25 }
+    [ { name = "Macbook", category = "Work", date = "2016-05-10", amount = 1400 }
+    , { name = "Groceries", category = "Groceries", date = "2016-05-10", amount = 25 }
     ]
 
 
 type Msg
     = Add Entry.Model
     | Delete Int
-
-
-add : Entry.Model -> Model -> Model
-add entry model =
-    model ++ [ entry ]
 
 
 update : Msg -> Model -> Model
@@ -45,7 +41,7 @@ view model =
                 [ th [] [ text "Name" ]
                 , th [] [ text "Category" ]
                 , th [] [ text "Date" ]
-                , th [] [ text "Price" ]
+                , th [] [ text "Amount" ]
                 , th [] []
                 ]
             ]
@@ -53,16 +49,21 @@ view model =
         ]
 
 
-sumPrice : Model -> Float
-sumPrice model =
-    List.sum (List.map (\e -> e.price) model)
+add : Entry.Model -> Model -> Model
+add entry model =
+    model ++ [ entry ]
+
+
+sumAmount : Model -> Float
+sumAmount model =
+    List.sum (List.map (\e -> e.amount) model)
 
 
 total : Model -> Html Msg
 total model =
     tr []
         [ th [ colspan 3 ] [ text "Total" ]
-        , td [] [ text (toString (sumPrice model)) ]
+        , td [] [ text (toString (sumAmount model)) ]
         , td [] []
         ]
 
@@ -78,6 +79,11 @@ entryView i model =
         [ td [] [ text model.name ]
         , td [] [ text model.category ]
         , td [] [ text model.date ]
-        , td [] [ text (toString model.price) ]
+        , td [] [ text (toString model.amount) ]
         , td [] [ button [ class "btn btn-xs btn-default", onClick (Delete i) ] [ text "Delete" ] ]
         ]
+
+
+main : Program Never
+main =
+    App.beginnerProgram { model = init, update = update, view = view }

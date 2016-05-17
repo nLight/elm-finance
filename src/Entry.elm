@@ -4,14 +4,14 @@ import String
 
 
 type alias Model =
-    { name : String, category : String, date : String, price : Float }
+    { name : String, category : String, date : String, amount : Float }
 
 
 type Field
     = Name
     | Date'
     | Category
-    | Price
+    | Amount
 
 
 type Msg
@@ -20,7 +20,7 @@ type Msg
 
 init : Model
 init =
-    { name = "", category = "", date = "", price = 0 }
+    { name = "", category = "", date = "", amount = 0 }
 
 
 update : Msg -> Model -> Model
@@ -35,10 +35,10 @@ update message model =
         Update Date' value ->
             { model | date = value }
 
-        Update Price value ->
+        Update Amount value ->
             case String.toFloat value of
                 Ok float ->
-                    { model | price = float }
+                    { model | amount = float }
 
                 Err _ ->
                     model

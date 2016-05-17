@@ -54,8 +54,8 @@ view model =
             , input
                 [ class "form-control"
                 , type' "text"
-                , onInput (Update Entry.Price)
-                , value (toString model.price)
+                , onInput (Update Entry.Amount)
+                , value (toString model.amount)
                 ]
                 []
             ]
